@@ -1,0 +1,11 @@
+.contactForm{
+  max-width: 500px;
+  margin:0 auto;
+  padding: 0 15px;
+}
+small.form-text{
+  color:#dc3545 !important;
+}
+input.invalid{
+  border-color: #dc3545;
+}
