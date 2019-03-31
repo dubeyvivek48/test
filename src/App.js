@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
+import { BrowserRouter, Route, Switch, Link } from 'react-router-dom';
 import Nav from './components/Nav';
+import Home from './components/Home';
+import ContactDetails from './components/ContactsDetails';
 import './App.css';
 class App extends Component {
+ 
   constructor(){
     super();
     this.state={
@@ -19,7 +23,7 @@ class App extends Component {
     const value=e.target.value;
     this.setState({[name]:value});
   }
-  onSubmit=(e)=>{
+  onSubmit=(e)=>{    
     e.preventDefault();
     let errorarr=[];
     let error;
@@ -28,7 +32,7 @@ class App extends Component {
     //check name is valid or not and push
     errorarr.push(this.state.name.length>=3);
     //check phone is valid or not and push    
-    errorarr.push(this.state.phone.match(regPhone));
+    errorarr.push(this.state.phone.match(regPhone)!=null);
     ////check address is valid or not and push    
     errorarr.push(this.state.address.length>=10);    
     // check address is valid or not and push
@@ -38,9 +42,7 @@ class App extends Component {
       this.state.phone.length>=10 && 
       this.state.phone.length<=16 &&
       this.state.address.length>=10 && 
-      reg.test(this.state.email ));
-
-  
+      reg.test(this.state.email ));  
   // check error   
      if(!error){
       let contactDetails={
@@ -49,14 +51,21 @@ class App extends Component {
         address:this.state.address,
         email:this.state.email,
       }
-
+     
+      document.getElementById("name").value="";
+      document.getElementById("phone").value="";
+      document.getElementById("address").value="";
+      document.getElementById("email").value="";
+      //if form submitted change state
+      console.log("IFF   zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz");
+      console.log(this.state);
       this.setState({
         contactDetails:[contactDetails , ...this.state.contactDetails],
         errorArray:errorarr,
-        name:'',
-        phone:'',
-        address:'',
-        email:''
+      name:'',
+      phone:'',
+      address:'',
+      email:''
       })
       console.log(this.state.contactDetails);
     }
@@ -71,33 +80,16 @@ class App extends Component {
 
   render() {
     return (
-      <div>
+      <div>       
+        <BrowserRouter>
         <Nav />
+          <Switch>        
+            <Route exact path="/"  render={()=><Home data={this.state} errorArray={this.state.errorArray}  onChangeHandler={this.onChangeHandler} onSubmit={this.onSubmit}/> } />
+            <Route path="/contacts" render={()=> <ContactDetails contactDetails={this.state.contactDetails} />} />
+          </Switch>
+      </BrowserRouter> 
       
-      <form className="contactForm mt-5">
-        <div className="form-group">
-          <label >Name</label>
-          <input type="text" name="name" className={this.state.errorArray[0]?" form-control":" invalid form-control"} value={this.state.name} onChange={this.onChangeHandler} placeholder="Enter name" />
-          <small  className={this.state.errorArray[0] ?"d-none":"form-text text-muted"}>invalid Name</small>
-        </div>
-        
-        <div className="form-group">
-          <label >Phone</label>
-          <input type="text" name="phone" className={this.state.errorArray[1]?" form-control":" invalid form-control"} value={this.state.phone}  onChange={this.onChangeHandler}   placeholder="Enter hone no." />
-          <small id="emailHelp" className={this.state.errorArray[1] ?"d-none":"form-text text-muted"}>Invalid Phone no</small>
-        </div>
-        <div className="form-group">
-          <label >Address</label>
-          <input type="text" name="address" className={this.state.errorArray[2]?" form-control":" invalid form-control"} value={this.state.address}  onChange={this.onChangeHandler} placeholder="Enter address." />
-          <small id="emailHelp" className={this.state.errorArray[2] ?"d-none":"form-text text-muted"}>Invalid Address</small>
-        </div>
-        <div className="form-group">
-          <label >Email</label>
-          <input type="email" name="email" className={this.state.errorArray[3]?" form-control":" invalid form-control"} value={this.state.email}  onChange={this.onChangeHandler} placeholder="Enter email" />
-          <small id="emailHelp" className={this.state.errorArray[3] ?"d-none":"form-text text-muted"}>Invalid Email</small>
-        </div>      
-        <button type="submit" onClick={this.onSubmit} className="btn btn-primary btn-block">Submit</button>
-      </form>
+      
       </div>
     );
   }

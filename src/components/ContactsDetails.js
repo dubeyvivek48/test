@@ -1,19 +1,33 @@
 import React from 'react';
-const ContactDetails=(props)=>{
+const ContactDetails=(props)=>{ 
     return(
-      <nav className="navbar navbar-expand-lg navbar-light bg-light">
-      <div className="container">
-        <a className="navbar-brand" href="#">TEST</a>
-        <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-          <span className="navbar-toggler-icon"></span>
-        </button>
-        <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
-          <div className="navbar-nav ml-auto">
-            <a className="nav-item nav-link" href="#">Contact Details</a>
-          </div>
-        </div>
-      </div>          
-    </nav>
+      <div className="container mt-5">
+      <table class="table table-dark">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Phone</th>
+            <th scope="col">Address</th>
+            <th scope="col">Email</th>
+          </tr>
+        </thead>
+        <tbody>
+          {props.contactDetails.map((data,index)=>
+                   
+            <tr key={data.phone}>
+              <td>{index +1}</td>              
+               <td>{data.name}</td>
+               <td>{data.phone}</td>
+               <td>{data.address}</td>
+               <td>{data.email}</td>
+          </tr>
+           
+        )}          
+        </tbody>
+      </table>
+      </div>
+      
     )
 }
 export default ContactDetails;
